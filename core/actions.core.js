@@ -70,6 +70,18 @@ class Action {
             throw e
         }
     }
+
+    async search(params){
+        try{
+            let data = await this.model.find(
+                params
+            ).exec()
+
+            return data
+        }catch(e){
+            throw e
+        }
+    }
 }
 
 module.exports = Action

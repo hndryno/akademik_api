@@ -1,5 +1,5 @@
 const Kelas = require('../../models/kelas.model')
-const API = require('../../core/kelas.core')
+const API = require('../../core/actions.core')
 
 class List extends API{
     constructor(){
@@ -9,7 +9,7 @@ class List extends API{
     async exec(req, res, next){
         try{
             let params = {}
-            let search = {}
+            let search = req.query
 
             let limit = parseInt(req.query.limit)
             if(!limit){

@@ -8,11 +8,21 @@ let kelasSchema = new Schema({
         type: Date,
         default: Date.now()
     },
-    created_at: {
+    updated_at: {
         type: Date,
         default: Date.now()
     }
 })
+
+kelasSchema.methods.toJSON = function() {
+    const kelas = this
+    const kelasObject = kelas.toObject()    
+
+    delete kelasObject.created_at
+    delete kelasObject.updated_at
+
+    return kelasObject
+}
 
 kelasSchema.plugin(mongoosePaginate)
 let Kelas = mongoose.model('Kelas', kelasSchema)

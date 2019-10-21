@@ -1,21 +1,29 @@
 const Guru = require('../../models/guru.model')
+const API = require('../../core/actions.core')
 
-class ShowGuru{
-    constructor(id){
-        this.id = id
+class Show extends API{
+    constructor(){
+        super(Guru)
     }
 
-    async exec(){
+    async exec(req, res, next){
         try{
-            let query = await Guru.findOne({
-                _id: this.id
-            }).exec()
-            return query
+            let { id } = req.params
+            let data = await this.show(id)
 
+            return res.send({
+                code: 200,
+                status: 'Berhasil!',
+                data
+            })
         }catch(e){
-            throw e
+            return res.send({
+                code: 400,
+                status: 'gagal!',
+                message: e.message
+            })
         }
     }
 }
 
-module.exports = ShowGuru
+module.exports = Show

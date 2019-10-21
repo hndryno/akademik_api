@@ -4,7 +4,8 @@ const mongoosePaginate = require('mongoose-paginate')
 
 let matpelSchema = new Schema({
     nama : String,
-    id_guru: String,
+    guru: String,
+    kelas: String,
     created_at: {
         type: Date,
         default: Date.now()

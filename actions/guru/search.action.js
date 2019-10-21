@@ -20,7 +20,7 @@ class Search{
                     pages: res.pages
                 }
             })
-            
+            console.log('berhasil')
             return result
         }catch(e){
             throw e

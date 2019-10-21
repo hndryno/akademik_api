@@ -1,29 +1,35 @@
-let Matpel = require('../../models/mata_pelajaran.model')
+const Matpel = require('../../models/mata_pelajaran.model')
+const API = require('../../core/actions.core')
 
-class UpdateMatpel{
-    constructor(id, req){
-        this.id = id,
-        this.nama = req.body.nama,
-        this.id_guru = req.body.id_guru
+class List extends API{
+    constructor(){
+        super(Matpel)
     }
 
-    async exec(){
+    async exec(req, res, next){
         try{
-            let data = {
-                id: this.id,
-                nama: this.nama,
-                id_guru : this.id_guru
+            let { id } = req.params
+            let { nama, guru, kelas } = req.body
+            let request_data = {
+                nama,
+                guru,
+                kelas
             }
-    
-            let query = await Matpel.findByIdAndUpdate({
-                _id: this.id
-            }, data, {new: true}).exec()
-    
-            return query
+            let data = await this.update(id, request_data)
+
+            return res.send({
+                code: 200,
+                status: 'Berhasil!',
+                data
+            })
         }catch(e){
-            throw e
+            return res.send({
+                code: 400,
+                status: 'gagal!',
+                message: e.message
+            })
         }
     }
 }
 
-module.exports = UpdateMatpel
+module.exports = List

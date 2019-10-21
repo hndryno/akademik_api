@@ -1,5 +1,5 @@
 const Kelas = require('../../models/kelas.model')
-const API = require('../../core/kelas.core')
+const API = require('../../core/actions.core')
 
 class List extends API{
     constructor(){

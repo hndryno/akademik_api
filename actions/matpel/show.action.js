@@ -1,19 +1,26 @@
 const Matpel = require("../../models/mata_pelajaran.model")
+const API = require("../../core/actions.core")
 
-class ShowMatpel{
-    constructor(id){
-        this.id = id
+class ShowMatpel extends API{
+    constructor(){
+        super(Matpel)
     }
 
-    async exec() {
+    async exec(req, res, next) {
         try{
-            let query = await Matpel.findOne({
-                _id: this.id
-            }).exec()
+            let {id} = req.params
+            let data = await this.show(id)
 
-            return query
-        }catch(err){
-            throw err
+            return res.send({
+                code: 200,
+                status: 'success',
+                data
+            })
+        }catch(e){
+            return res.send({
+                code: 400,
+                message: e.message
+            })
         }
     }
 }

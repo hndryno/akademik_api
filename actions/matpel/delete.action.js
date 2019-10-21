@@ -1,19 +1,27 @@
-Matpel = require('../../models/mata_pelajaran.model')
+const Matpel = require('../../models/mata_pelajaran.model')
+const API = require('../../core/actions.core')
 
-class DeleteMatpel{
-    constructor(id){
-        this.id = id
+class DeleteMatpel extends API{
+    constructor(){
+        super(Matpel)
     }
 
-    async exec(){
+    async exec(req, res, next){
         try{
-            let query = await Matpel.findOneAndDelete({
-                _id: this.id
-            })
+            let { id } = req.params
+            let data = await this.delete(id)
 
-            return query
+            return res.send({
+                code: 200,
+                status: 'Berhasil!',
+                data
+            })
         }catch(e){
-            throw e
+            return res.send({
+                code: 400,
+                status: 'gagal!',
+                message: e.message
+            })
         }
     }
 }

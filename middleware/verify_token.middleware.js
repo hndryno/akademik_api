@@ -21,6 +21,8 @@ module.exports = () => {
             jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
                 if(err) return res.status(401).json(unauthenticated)
 
+                req.token = token //untuk logout
+
                 return next()
             })
         } else {

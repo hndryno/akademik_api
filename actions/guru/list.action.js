@@ -1,26 +1,45 @@
 const Guru = require('../../models/guru.model')
+const API = require('../../core/actions.core')
 
-class List{
-    constructor(search, params) {
-        this.search = search
-        this.params = params
+class List extends API{
+    constructor() {
+       super(Guru)
     }
 
-    async exec(){
+    async exec(req, res, next){
         try{
-            let result = await Guru.paginate(
-                this.search,
-                this.params
-            ).then(res => {
-                return{
-                    data: res.docs,
-                    total: res.total,
-                    limit: res.limit,
-                    page: res.page,
-                    pages: res.pages
-                }
+            let params = {}
+            let search = req.query
+
+            let limit = parseInt(req.query.limit)
+            if(!limit){
+                params.limit = 30
+            }else{
+                params.limit = limit
+            }
+
+            let page = parseInt(req.query.page)
+            if(!page){
+                params.page = 1
+            }else{
+                params.page = page
+            }
+
+            let data = await this.list(search, params)
+
+            let meta = {
+                total: data.total,
+                limit: data.limit,
+                page: data.page,
+                pages: data.pages
+            }
+
+            return res.send({
+                code: 200,
+                status: 'Berhasil!',
+                data,
+                meta
             })
-            return result
         }catch(e){
             throw e
         }

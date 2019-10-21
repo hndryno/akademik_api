@@ -1,11 +1,12 @@
 const UpdateGuru = require('../actions/guru/updateListener.action')
-const ShowGuru = require("../actions/guru/show.action")
+const ShowGuru = require("../actions/guru/showListener.action")
 
 const guru = {
     tambah_jumlah_matpel: async data => {
         try{
-            let _id = data.id_guru
+            let _id = data.guru
             let guru = await new ShowGuru(_id).exec()
+            console.log(guru)
             console.log(`Jumlah Mata Pelajaran ${guru.banyak_pelajaran}`)
             let banyak_pelajaran = parseInt(guru.banyak_pelajaran) + 1
             console.log(banyak_pelajaran)

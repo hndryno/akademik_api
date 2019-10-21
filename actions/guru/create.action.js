@@ -1,26 +1,45 @@
-const Guru = require("../../models/guru.model") //import model
+const Guru = require("../../models/guru.model")
+const API = require('../../core/actions.core')
+const { validationResult } = require('express-validator')
 
-class CreateGuru {
-    constructor(req) {
-        this.nama = req.body.nama
-        this.umur = req.body.umur
-        this.jenis_kelamin = req.body.jenis_kelamin
-        this.alamat = req.body.alamat
+class CreateGuru extends API{
+    constructor() {
+        super(Guru)
     }
 
-    async exec() {
-        try{
-            let query = new Guru({
-                nama: this.nama,
-                umur: this.umur,
-                jenis_kelamin: this.jenis_kelamin,
-                alamat: this.alamat
+    async exec(req, res, next) {
+        const errors = validationResult(req)
+        if(!errors.isEmpty()) {
+            return res.send({
+                code: 422,
+                status: "error",
+                message: errors.array()
             })
-            await query.save()
+        }
+        
+        try{
+            let { nama, umur, jenis_kelamin, alamat } = req.body
+            let request_data = {
+                nama,
+                umur,
+                jenis_kelamin,
+                alamat
+            }
 
-            return query
-        }catch(err){
-            throw err
+            let data = await this.create(request_data)
+
+            return res.send({
+                code: 201,
+                status: "berhasil",
+                data
+            })
+
+        }catch(e){
+            return res.send({
+                code: 400,
+                status: "error",
+                message: e.message
+            })
         }
     }
 }

@@ -1,5 +1,5 @@
 const Kelas = require('../../models/kelas.model')
-const API = require('../../core/kelas.core')
+const API = require('../../core/actions.core')
 const { validationResult } = require('express-validator')
 
 class Create extends API {

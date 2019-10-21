@@ -1,34 +1,33 @@
-Guru = require('../../models/guru.model')
+const Guru = require('../../models/guru.model')
+const API = require('../../core/actions.core')
 
-class UpdateGuru{
-    constructor(id, req){
-        this.id = id,
-        this.nama = req.body.nama,
-        this.umur = req.body.umur,
-        this.jenis_kelamin = req.body.jenis_kelamin,
-        this.alamat = req.body.alamat
+class Update extends API{
+    constructor(){
+        super(Guru)
     }
 
-    async exec(){
+    async exec(req, res, next){
         try{
-            let data = {
-                id: this.id,
-                nama: this.nama,
-                umur: this.umur,
-                jenis_kelamin: this.jenis_kelamin,
-                alamat: this.alamat,
+            let { id } = req.params
+            let { nama, umur, jenis_kelamin, alamat } = req.body
+            let request_data = {
+                nama, umur, jenis_kelamin, alamat
             }
+            let data = await this.update(id, request_data)
 
-            let query = await Guru.findOneAndUpdate({
-                _id: this.id
-            }, data,{new: true}).exec()
-
-            return query
+            return res.send({
+                code: 200,
+                status: 'Berhasil!',
+                data
+            })
         }catch(e){
-            throw e
+            return res.send({
+                code: 400,
+                status: 'gagal!',
+                message: e.message
+            })
         }
     }
 }
 
-module.exports = UpdateGuru
-
+module.exports = Update
